@@ -106,6 +106,11 @@ public:
     return fLogicalCyto;
   }
 
+  inline G4double GetECMRadius() const
+  {
+      return fECMRadius;
+  }
+
   const G4LogicalVolume* GetECMLogicalVolume() const
   {
       return fLogicalECM;

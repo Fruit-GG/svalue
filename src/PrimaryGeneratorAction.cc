@@ -71,25 +71,12 @@ PrimaryGeneratorAction::~PrimaryGeneratorAction()
 
 void PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
 {    
-  G4double thickness = fDetector->GetCytoThickness();
-  G4double radius = fDetector->GetNuclRadius();
+  G4double radius = 1.01 * (fDetector->GetECMRadius());
 
-  G4double rx=1*m;
-  G4double ry=1*m;
-  G4double rz=1*m;
-  G4double myRadius = 0;
+  
 
-  do
-  {
-    rx = (2*G4UniformRand()-1)*(radius+thickness)*1.01;  //G4UniformRand()生成0-1的数字
-    ry = (2*G4UniformRand()-1)*(radius+thickness)*1.01;
-    rz = (2*G4UniformRand()-1)*(radius+thickness)*1.01;
-    myRadius = std::sqrt(rx*rx+ry*ry+rz*rz);
-
-  } while (myRadius>radius+thickness || myRadius<radius) ;  //筛选出位于细胞质中的随机位置
-
-  fParticleGun->SetParticlePosition(G4ThreeVector(rx,ry,rz));
-  fParticleGun->SetParticleMomentumDirection(G4RandomDirection());
+  fParticleGun->SetParticlePosition(G4ThreeVector(radius, 0, 0));
+  fParticleGun->SetParticleMomentumDirection(G4ThreeVector(-1,0,0));
   fParticleGun->GeneratePrimaryVertex(anEvent);
 }
 
