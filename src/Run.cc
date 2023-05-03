@@ -175,7 +175,7 @@ void Run::EndOfRun()
   G4double rmsCyto = fCytoEdeposit2 - fCytoEdeposit*fCytoEdeposit;        
   if (rmsCyto>0.) rmsCyto = std::sqrt(rmsCyto); else rmsCyto = 0.;
 
-  G4cout.precision(3);       
+  G4cout.precision(5);       
   G4cout 
     << "\n Total Energy deposited in cytoplasm = " << G4BestUnit(fCytoEdeposit,"Energy")
     << " +- "                                << G4BestUnit( rmsCyto,"Energy")
@@ -184,11 +184,11 @@ void Run::EndOfRun()
   G4double sValueCyto=fCytoEdeposit/fDetector->GetCytoMass();    //这里有问题
   G4double rmsSValueCyto=rmsCyto/fDetector->GetCytoMass();
   
-  G4cout.precision(3);       
+  G4cout.precision(5);       
   G4cout 
-    << "\n S value for cytoplasm (C<-C) = " << sValueCyto/gray << " Gy/Bq.s "
-    << " +- "                                << rmsSValueCyto/gray 
-    <<  " Gy/Bq.s "
+    << "\n S value for cytoplasm (C<-N) = " << sValueCyto/gray * 1000 << " mGy/Bq.s "
+    << " +- "                                << rmsSValueCyto/gray * 1000
+    <<  " mGy/Bq.s "
     << G4endl;
               
   //
@@ -197,7 +197,7 @@ void Run::EndOfRun()
   G4double rmsNucl = fNuclEdeposit2 - fNuclEdeposit*fNuclEdeposit;        
   if (rmsNucl>0.) rmsNucl = std::sqrt(rmsNucl); else rmsNucl = 0.;
 
-  G4cout.precision(3);       
+  G4cout.precision(5);       
   G4cout 
     << "\n Total Energy deposited in nucleus = " << G4BestUnit(fNuclEdeposit,"Energy")
     << " +- "                                << G4BestUnit( rmsNucl,"Energy")
@@ -206,11 +206,11 @@ void Run::EndOfRun()
   G4double sValueNucl=fNuclEdeposit/fDetector->GetNuclMass();
   G4double rmsSValueNucl=rmsNucl/fDetector->GetNuclMass();
   
-  G4cout.precision(3);       
+  G4cout.precision(5);       
   G4cout 
-    << "\n S value for nucleus (N<-C) = " << sValueNucl/gray << " Gy/Bq.s "
-    << " +- "                                << rmsSValueNucl/gray 
-    <<  " Gy/Bq.s "
+    << "\n S value for nucleus (N<-N) = " << sValueNucl/gray * 1000 << " mGy/Bq.s "
+    << " +- "                                << rmsSValueNucl/gray * 1000
+    <<  " mGy/Bq.s "
     << G4endl;
 
   //compute track length of primary track
@@ -219,7 +219,7 @@ void Run::EndOfRun()
   G4double rms = fTrackLen2 - fTrackLen*fTrackLen;        
   if (rms>0.) rms = std::sqrt(rms); else rms = 0.;
 
-  G4cout.precision(3);       
+  G4cout.precision(5);       
   G4cout 
     << "\n Track length of primary track = " << G4BestUnit(fTrackLen,"Length")
     << " +- "                                << G4BestUnit( rms,"Length");
