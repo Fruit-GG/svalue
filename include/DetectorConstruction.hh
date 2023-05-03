@@ -60,6 +60,8 @@ public:
   void SetNuclRadius(G4double);
   void SetNuclMaterial(const G4String&);
 
+  void SetECMMaterial(const G4String&);
+
   void SetWorldMaterial(const G4String&);
 
   G4VPhysicalVolume* Construct() override;
@@ -104,6 +106,11 @@ public:
     return fLogicalCyto;
   }
 
+  const G4LogicalVolume* GetECMLogicalVolume() const
+  {
+      return fLogicalECM;
+  }
+
   void PrintParameters() const;
 
 private:
@@ -112,14 +119,18 @@ private:
 
   G4Material* fNuclMaterial = nullptr;
   G4Material* fCytoMaterial = nullptr;
+  G4Material* fECMMaterial = nullptr;
   G4Material* fWorldMaterial = nullptr;
 
   G4VPhysicalVolume* fNucl = nullptr;
   G4VPhysicalVolume* fCyto = nullptr;
+  G4VPhysicalVolume* fECM = nullptr;
   G4VPhysicalVolume* fWorld = nullptr;
+
 
   G4LogicalVolume* fLogicalNucl = nullptr;
   G4LogicalVolume* fLogicalCyto = nullptr;
+  G4LogicalVolume* fLogicalECM = nullptr;
   G4LogicalVolume* fLogicalWorld = nullptr;
 
   DetectorMessenger* fDetectorMessenger = nullptr;
@@ -127,6 +138,7 @@ private:
   G4double fTrackingCut;
   G4double fNuclRadius;
   G4double fCytoThickness;
+  G4double fECMRadius;
   G4double fWorldRadius;
 
 };

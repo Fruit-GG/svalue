@@ -102,5 +102,21 @@ Note: rms values correspond to standard deviation.
 
 ---------------------------------------------------------------------------
 
-Should you have any enquiry, please do not hesitate to contact: 
-incerti@cenbg.in2p3.fr
+
+# Geant4_cell
+
+这份文件是基于
+《Dosimetry assessment of theranostic Auger-emitting radionuclides in a 
+micron-sized multicellular cluster model: A Monte Carlo study using 
+Geant4-DNA simulations 》
+进行编写的
+
+修改过程：
+1、几何体 已完成
+2、提取方法
+3、物理过程仔细修改
+4、通过.mac文件进行精修
+
+
+
+目的是能够把该文章的实验数据通过蒙卡模拟的方式复现出来

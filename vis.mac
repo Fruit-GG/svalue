@@ -1,0 +1,33 @@
+/run/numberOfThreads 1
+
+/run/initialize
+/vis/open OGL 600x600-0+0
+
+/vis/viewer/set/autoRefresh false
+/vis/verbose errors
+
+
+/vis/drawVolume
+
+#设置颜色透明度
+#/vis/geometry/set/visibility World 0 false
+
+/vis/geometry/set/colour World 0 0.5 0.1 0.1 .2
+/vis/geometry/set/colour ECM 0 0.1 0.1 0.8 .2
+/vis/geometry/set/colour Nucl 0 0.8 0.8 0.8 .6
+/vis/geometry/set/colour Cyto 0 0.2 0.8 0.2 .4
+
+#添加标志物
+#/vis/scene/add/axes    # Simple axes: x=red, y=green, z=blue.可以判断方向
+/vis/scene/add/eventID
+
+
+/vis/viewer/set/style surface
+/vis/scene/endOfEventAction accumulate
+
+
+/vis/scene/add/trajectories smooth
+/vis/modeling/trajectories/create/drawByCharge
+
+
+/run/beamOn 100

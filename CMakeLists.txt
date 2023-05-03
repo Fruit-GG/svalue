@@ -41,6 +41,7 @@ target_link_libraries(svalue ${Geant4_LIBRARIES} )
 #
 set(svalue_SCRIPTS
     svalue.in plot.C
+    vis.mac
   )
 
 foreach(_script ${svalue_SCRIPTS})

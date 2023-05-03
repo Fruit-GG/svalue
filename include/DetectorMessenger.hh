@@ -63,6 +63,7 @@ private:
   G4UIdirectory* fTestemDir;
   G4UIdirectory* fDetDir;
   G4UIcmdWithAString* fMaterWorldCmd;
+  G4UIcmdWithAString* fMaterECMCmd;
   G4UIcmdWithAString* fMaterCytoCmd;
   G4UIcmdWithAString* fMaterNuclCmd;
   G4UIcmdWithADoubleAndUnit* fNuclRadiusCmd;

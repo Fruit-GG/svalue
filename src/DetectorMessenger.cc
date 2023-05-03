@@ -71,6 +71,13 @@ DetectorMessenger::DetectorMessenger(DetectorConstruction * Det)
   fMaterNuclCmd->SetParameterName("choice",false);
   fMaterNuclCmd->AvailableForStates(G4State_PreInit,G4State_Idle);
   fMaterNuclCmd->SetToBeBroadcasted(false);  
+
+
+  fMaterNuclCmd = new G4UIcmdWithAString("/svalue/det/setECMMat", this);
+  fMaterNuclCmd->SetGuidance("Select material of the ECM");
+  fMaterNuclCmd->SetParameterName("choice", false);
+  fMaterNuclCmd->AvailableForStates(G4State_PreInit, G4State_Idle);
+  fMaterNuclCmd->SetToBeBroadcasted(false);
   
   fMaterCytoCmd = new G4UIcmdWithAString("/svalue/det/setCytoMat",this);
   fMaterCytoCmd->SetGuidance("Select material of the cytoplasm");
@@ -110,6 +117,7 @@ DetectorMessenger::~DetectorMessenger()
 {
   delete fMaterWorldCmd;
   delete fMaterCytoCmd;
+  delete fMaterECMCmd;
   delete fMaterNuclCmd;
   delete fNuclRadiusCmd;
   delete fCytoThicknessCmd;
@@ -130,6 +138,11 @@ void DetectorMessenger::SetNewValue(G4UIcommand* command,G4String newValue)
    
   if( command == fMaterNuclCmd )
    { fDetector->SetNuclMaterial(newValue);}
+
+  if (command == fMaterECMCmd)
+  {
+      fDetector->SetECMMaterial(newValue);
+  }
    
   if( command == fNuclRadiusCmd )
    { fDetector->SetNuclRadius(fNuclRadiusCmd->GetNewDoubleValue(newValue));}

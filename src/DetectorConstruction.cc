@@ -38,6 +38,8 @@
 
 #include "G4NistManager.hh"
 #include "G4Sphere.hh"
+#include "G4Box.hh"
+#include "G4Orb.hh"
 #include "G4LogicalVolume.hh"
 #include "G4VPhysicalVolume.hh"
 #include "G4PVPlacement.hh"
@@ -63,9 +65,10 @@ DetectorConstruction::DetectorConstruction()
   fTrackingCut = 7.4*CLHEP::eV;
   
   // default parameter values
-  fWorldRadius = 10*CLHEP::m;
-  fCytoThickness = 20*CLHEP::nm;
-  fNuclRadius = 10*CLHEP::nm;
+  fWorldRadius = 30*CLHEP::um;
+  fCytoThickness = 1*CLHEP::um;
+  fNuclRadius = 4*CLHEP::um;
+  fECMRadius = 18.09 * CLHEP::um;
   
   DefineMaterials();
 
@@ -88,6 +91,7 @@ void DetectorConstruction::DefineMaterials()
   
   fWorldMaterial = man->FindOrBuildMaterial("G4_WATER");
   fCytoMaterial = fNuclMaterial = man->FindOrBuildMaterial("G4_WATER");
+  fECMMaterial = man->FindOrBuildMaterial("G4_TISSUE_SOFT_ICRU-4");
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -95,30 +99,53 @@ void DetectorConstruction::DefineMaterials()
 G4VPhysicalVolume* DetectorConstruction::Construct()
 {
   if(fWorld) return fWorld;
-                   
-  // Spherical world
+  G4bool checkOverlaps = false;
+                
+  // tube world
   //
-  G4Sphere* 
-  sWorld = new G4Sphere("World",                           
-                        0., 
-                        1000*fNuclRadius, 
-                        0., 
-                        twopi, 
-                        0., 
-                        pi);    
+    //World
+  G4Box* solidWorld =
+      new G4Box("World",                       //its name
+          fWorldRadius, fWorldRadius, fWorldRadius);     //its size
 
-  fLogicalWorld = new G4LogicalVolume(sWorld,                        
-                                      fWorldMaterial,          
-                                      "World");              
-                                   
-  fWorld = new G4PVPlacement(0,                         
-                             G4ThreeVector(),           
-                             fLogicalWorld,                    
-                             "World",                 
-                             0,                         
-                             false,                     
-                             0);                        
+  fLogicalWorld =
+      new G4LogicalVolume(solidWorld,          //its solid
+          fWorldMaterial,           //its material
+          "World");            //its name
 
+  fWorld =
+      new G4PVPlacement(0,                     //no rotation
+          G4ThreeVector(),       //at (0,0,0)
+          fLogicalWorld,            //its logical volume
+          "World",               //its name
+          0,                     //its mother  volume
+          false,                 //no boolean operation
+          0,                     //copy number
+          checkOverlaps);        //overlaps checking                      
+
+  //Spherical ECM
+  G4Orb* solidECM =
+      new G4Orb("ECM",
+          fECMRadius);
+
+  fLogicalECM =
+      new G4LogicalVolume(solidECM,            //its solid
+          fECMMaterial,             //its material
+          "ECM");         //its name
+
+  fECM =
+      new G4PVPlacement(0,                       //no rotation
+          G4ThreeVector(),         //at (0,0,0)
+          fLogicalECM,                //its logical volume
+          "ECM",              //its name
+          fLogicalWorld,              //its mother  volume
+          false,                   //no boolean operation
+          0,                       //copy number
+          checkOverlaps);          //overlaps checking
+
+
+
+  //Here for 13 cells
   // Spherical nucleus
   //
   G4Sphere* 
@@ -134,13 +161,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
                                      fNuclMaterial,          
                                     "Nucl");              
                                    
-  fNucl = new G4PVPlacement(0,                         
-                            G4ThreeVector(),          
-                            "Nucl",                 
-                            fLogicalNucl,                         
-                            fWorld,
-                            false,                     
-                            0);                       
+                 
 
   // Spherical shell for cytoplasm
   //
@@ -157,13 +178,55 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
                                      fCytoMaterial,       
                                     "Cyto");       
                                    
-  fCyto = new G4PVPlacement(0,                         
-                            G4ThreeVector(),           
-                            "Cyto",                
-                            fLogicalCyto,
-                            fWorld,                       
-                            false,                   
-                            0);               
+ 
+
+  //放置细胞
+  // 
+  G4ThreeVector cell_Vector[13];
+  cell_Vector[0] = G4ThreeVector(0, 0, 0);
+  cell_Vector[1] = G4ThreeVector(-12.06 * um, 0., 0.);
+  cell_Vector[2] = G4ThreeVector(12.06 * um, 0., 0.);
+  cell_Vector[3] = G4ThreeVector(-6.03 * um, 0, -10.44 * um);
+  cell_Vector[4] = G4ThreeVector(6.03 * um, 0, -10.44 * um);
+  cell_Vector[5] = G4ThreeVector(-6.03 * um, 0, 10.44 * um);
+  cell_Vector[6] = G4ThreeVector(6.03 * um, 0, 10.44 * um);
+  cell_Vector[7] = G4ThreeVector(0, -10 * um, -5.22 * um);
+  cell_Vector[8] = G4ThreeVector(-6.03 * um, -10 * um, 5.22 * um);
+  cell_Vector[9] = G4ThreeVector(6.03 * um, -10 * um, 5.22 * um);
+
+  cell_Vector[10] = G4ThreeVector(0, 10 * um, -5.22 * um);
+  cell_Vector[11] = G4ThreeVector(-6.03 * um, 10 * um, 5.22 * um);
+  cell_Vector[12] = G4ThreeVector(6.03 * um, 10 * um, 5.22 * um);
+
+
+  /*
+按细胞123依次为其所在的位置进行命名，但在logical上不做区分
+*/
+  for (int i = 1; i < 13; i++)
+  {
+      std::stringstream ss,aa;
+      ss << "Nucl_" << i;
+      aa << "Cyto_" << i;
+      G4String name1 = ss.str();
+      G4String name2 = aa.str();
+
+      fNucl = new G4PVPlacement(0,
+          G4ThreeVector(),
+          name1,
+          fLogicalNucl,
+          fECM,
+          false,
+          0);
+
+      fCyto = new G4PVPlacement(0,
+          G4ThreeVector(),
+          name2,
+          fLogicalCyto,
+          fECM,
+          false,
+          0);
+  }
+
   //
   
   PrintParameters();
@@ -174,6 +237,8 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
     fTrackingCut));
   fLogicalCyto->SetUserLimits(new G4UserLimits(DBL_MAX,DBL_MAX,DBL_MAX,
     fTrackingCut));
+  fLogicalECM->SetUserLimits(new G4UserLimits(DBL_MAX, DBL_MAX, DBL_MAX,
+      fTrackingCut));
   fLogicalWorld->SetUserLimits(new G4UserLimits(DBL_MAX,DBL_MAX,DBL_MAX,
     fTrackingCut));
     
@@ -238,6 +303,21 @@ void DetectorConstruction::SetWorldMaterial(const G4String& materialChoice)
     if(fLogicalWorld) fLogicalWorld->SetMaterial(pttoMaterial);
     G4RunManager::GetRunManager()->PhysicsHasBeenModified();
   }
+}
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+void DetectorConstruction::SetECMMaterial(const G4String& materialChoice)
+{
+    // search the material by its name   
+    G4Material* pttoMaterial =
+        G4NistManager::Instance()->FindOrBuildMaterial(materialChoice);
+
+    if (pttoMaterial && pttoMaterial != fECMMaterial) {
+        fECMMaterial = pttoMaterial;
+        if (fLogicalECM) fLogicalECM->SetMaterial(pttoMaterial);
+        G4RunManager::GetRunManager()->PhysicsHasBeenModified();
+    }
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
