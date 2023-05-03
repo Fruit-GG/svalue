@@ -1,0 +1,20 @@
+
+/run/verbose 1
+/control/verbose 1
+/control/cout/ignoreThreadsExcept 0
+#
+/run/numberOfThreads 4
+
+/svalue/phys/addPhysics  dna_opt2	        
+#
+/process/em/deexcitationIgnoreCut true
+/process/em/fluo true
+/process/em/pixe true
+/process/em/auger true
+/run/initialize
+
+/gun/particle e-
+#
+
+#/gun/energy 1 keV
+/run/beamOn 1000000

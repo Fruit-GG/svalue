@@ -100,6 +100,8 @@ int main(int argc,char** argv) {
     
   else           //define visualization and UI terminal for interactive mode
     { 
+
+      UI->ApplyCommand("/control/execute work.mac");
       ui->SessionStart();
       delete ui;
     }
