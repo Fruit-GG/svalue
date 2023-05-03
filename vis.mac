@@ -1,6 +1,20 @@
-/run/numberOfThreads 1
 
+/run/verbose 1
+/control/verbose 1
+/control/cout/ignoreThreadsExcept 0
+#
+/run/numberOfThreads 4
+
+/svalue/det/setTrackingCut 12 eV
+#
+/svalue/phys/addPhysics  dna_opt2	        
+#
+/process/em/deexcitationIgnoreCut true
+/process/em/fluo true
+/process/em/pixe true
+/process/em/auger true
 /run/initialize
+
 /vis/open OGL 600x600-0+0
 
 /vis/viewer/set/autoRefresh false
@@ -14,8 +28,8 @@
 
 /vis/geometry/set/colour World 0 0.5 0.1 0.1 .2
 /vis/geometry/set/colour ECM 0 0.1 0.1 0.8 .2
-/vis/geometry/set/colour Nucl 0 0.8 0.8 0.8 .6
-/vis/geometry/set/colour Cyto 0 0.2 0.8 0.2 .4
+/vis/geometry/set/colour Nucl 0 0.8 0.8 0.8 .8
+/vis/geometry/set/colour Cyto 0 0.8 0.8 0.1 .3
 
 #添加标志物
 #/vis/scene/add/axes    # Simple axes: x=red, y=green, z=blue.可以判断方向
@@ -29,5 +43,12 @@
 /vis/scene/add/trajectories smooth
 /vis/modeling/trajectories/create/drawByCharge
 
+#
+/gun/particle e-
+#
 
-/run/beamOn 100
+/gun/energy 1 keV
+/run/beamOn 1000
+#
+#/gun/energy 2 keV
+#/run/beamOn 1000
