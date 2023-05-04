@@ -124,13 +124,16 @@ void PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
   fParticleGun->SetParticleEnergy(energe[count] * keV);
 
 
-
+  /// <summary>
+  /// 该处是设置成在细胞核内进行随机出束
+  /// </summary>
+  /// <param name="anEvent"></param>
   G4double rx = 1 * m;
   G4double ry = 1 * m;
   G4double rz = 1 * m;
   G4double myRadius = 0;
 
-  //G4double thickness = fDetector->GetCytoThickness();
+  ////G4double thickness = fDetector->GetCytoThickness();
   G4double radius = fDetector->GetNuclRadius(); //在细胞核内
   do
   {
@@ -145,6 +148,8 @@ void PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
   fParticleGun->SetParticleMomentumDirection(G4RandomDirection());
   fParticleGun->GeneratePrimaryVertex(anEvent);
 
+
+  //该处是设置在ECM外部出束
 
   //G4double radius = 1.1 * (fDetector->GetECMRadius());
   //fParticleGun->SetParticlePosition(G4ThreeVector(radius, 0, 0));

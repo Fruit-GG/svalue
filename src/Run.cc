@@ -170,26 +170,6 @@ void Run::EndOfRun()
   }
       
   //
-  
-  fCytoEdeposit /= numberOfEvent; fCytoEdeposit2 /= numberOfEvent;
-  G4double rmsCyto = fCytoEdeposit2 - fCytoEdeposit*fCytoEdeposit;        
-  if (rmsCyto>0.) rmsCyto = std::sqrt(rmsCyto); else rmsCyto = 0.;
-
-  G4cout.precision(5);       
-  G4cout 
-    << "\n Total Energy deposited in cytoplasm = " << G4BestUnit(fCytoEdeposit,"Energy")
-    << " +- "                                << G4BestUnit( rmsCyto,"Energy")
-    << G4endl;
-                    
-  G4double sValueCyto=fCytoEdeposit/fDetector->GetCytoMass();    //这里有问题
-  G4double rmsSValueCyto=rmsCyto/fDetector->GetCytoMass();
-  
-  G4cout.precision(5);       
-  G4cout 
-    << "\n S value for cytoplasm (C<-N) = " << sValueCyto/gray * 1000 << " mGy/Bq.s "
-    << " +- "                                << rmsSValueCyto/gray * 1000
-    <<  " mGy/Bq.s "
-    << G4endl;
               
   //
   
@@ -212,7 +192,52 @@ void Run::EndOfRun()
     << " +- "                                << rmsSValueNucl/gray * 1000
     <<  " mGy/Bq.s "
     << G4endl;
+  //
+  // for cytoplasm
+  //    fCytoEdeposit /= numberOfEvent; fCytoEdeposit2 /= numberOfEvent;
+  //G4double rmsCyto = fCytoEdeposit2 - fCytoEdeposit * fCytoEdeposit;
+  //if (rmsCyto > 0.) rmsCyto = std::sqrt(rmsCyto); else rmsCyto = 0.;
+  //G4cout.precision(5);
+  //G4cout
+  //    << "\n Total Energy deposited in cytoplasm = " << G4BestUnit(fCytoEdeposit, "Energy")
+  //    << " +- " << G4BestUnit(rmsCyto, "Energy")
+  //    << G4endl;
+  //G4double sValueCyto = fCytoEdeposit / fDetector->GetCytoMass();
+  //G4double rmsSValueCyto = rmsCyto / fDetector->GetCytoMass();
+  //G4cout.precision(5);
+  //G4cout
+  //    << "\n S value for cytoplasm (C<-N) = " << sValueCyto / gray * 1000 << " mGy/Bq.s "
+  //    << " +- " << rmsSValueCyto / gray * 1000
+  //    << " mGy/Bq.s "
+  //    << G4endl;
 
+
+
+  //for Cell 
+  fCytoEdeposit /= numberOfEvent; fCytoEdeposit2 /= numberOfEvent;
+  G4double cellEdeposit = fCytoEdeposit + fNuclEdeposit;
+  G4double cellEdeposit2 = fNuclEdeposit2 + fCytoEdeposit2;
+  G4double rmsCell = cellEdeposit2 - cellEdeposit * cellEdeposit;
+  if (rmsCell > 0.) rmsCell = std::sqrt(rmsCell); else rmsCell = 0.;
+
+  G4cout.precision(5);
+  G4cout
+      << "\n Total Energy deposited in CELL = " << G4BestUnit(cellEdeposit, "Energy")
+      << " +- " << G4BestUnit(rmsCell, "Energy")
+      << G4endl;
+
+  G4double sValueCell = cellEdeposit / (fDetector->GetCytoMass()+ fDetector->GetNuclMass() );
+  G4double rmsSValueCell = rmsCell / (fDetector->GetCytoMass() + fDetector->GetNuclMass());
+
+  G4cout.precision(5);
+  G4cout
+      << "\n S value for cytoplasm (C<-C) = " << sValueCell / gray * 1000 << " mGy/Bq.s "
+      << " +- " << rmsSValueCell / gray * 1000
+      << " mGy/Bq.s "
+      << G4endl;
+
+
+/*
   //compute track length of primary track
   //
   fTrackLen /= numberOfEvent; fTrackLen2 /= numberOfEvent;
@@ -282,5 +307,5 @@ void Run::EndOfRun()
     rmsSValueNucl/gray
     );
   fclose (myFile);
-  
+  */
 }

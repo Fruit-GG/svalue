@@ -183,18 +183,18 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
   //∑≈÷√œ∏∞˚
   // 
   G4ThreeVector cell_Vector[13];
-  cell_Vector[0] = G4ThreeVector(0, 0, 0);
-  cell_Vector[1] = G4ThreeVector(-12.06 * um, 0., 0.);
-  cell_Vector[2] = G4ThreeVector(12.06 * um, 0., 0.);
-  cell_Vector[3] = G4ThreeVector(-6.03 * um, 0, -10.44 * um);
-  cell_Vector[4] = G4ThreeVector(6.03 * um, 0, -10.44 * um);
-  cell_Vector[5] = G4ThreeVector(-6.03 * um, 0, 10.44 * um);
-  cell_Vector[6] = G4ThreeVector(6.03 * um, 0, 10.44 * um);
-  cell_Vector[7] = G4ThreeVector(0, -10 * um, -5.22 * um);
+  cell_Vector[0] = G4ThreeVector(0 * um, 0 * um, 0 * um);
+  cell_Vector[1] = G4ThreeVector(-12.06 * um, 0. * um, 0. * um);
+  cell_Vector[2] = G4ThreeVector(12.06 * um, 0. * um, 0. * um);
+  cell_Vector[3] = G4ThreeVector(-6.03 * um, 0 * um, -10.44 * um);
+  cell_Vector[4] = G4ThreeVector(6.03 * um, 0 * um, -10.44 * um);
+  cell_Vector[5] = G4ThreeVector(-6.03 * um, 0 * um, 10.44 * um);
+  cell_Vector[6] = G4ThreeVector(6.03 * um, 0 * um, 10.44 * um);
+  cell_Vector[7] = G4ThreeVector(0 * um, -10 * um, -5.22 * um);
   cell_Vector[8] = G4ThreeVector(-6.03 * um, -10 * um, 5.22 * um);
   cell_Vector[9] = G4ThreeVector(6.03 * um, -10 * um, 5.22 * um);
 
-  cell_Vector[10] = G4ThreeVector(0, 10 * um, -5.22 * um);
+  cell_Vector[10] = G4ThreeVector(0 * um, 10 * um, -5.22 * um);
   cell_Vector[11] = G4ThreeVector(-6.03 * um, 10 * um, 5.22 * um);
   cell_Vector[12] = G4ThreeVector(6.03 * um, 10 * um, 5.22 * um);
 
