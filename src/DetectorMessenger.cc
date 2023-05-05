@@ -52,7 +52,8 @@ DetectorMessenger::DetectorMessenger(DetectorConstruction * Det)
  fMaterNuclCmd(0),
  fNuclRadiusCmd(0),
  fCytoThicknessCmd(0),
- fTrackingCutCmd(0) 
+ fTrackingCutCmd(0),
+ fMaterECMCmd(0)
 { 
   fTestemDir = new G4UIdirectory("/svalue/");
   fTestemDir->SetGuidance(" detector control.");

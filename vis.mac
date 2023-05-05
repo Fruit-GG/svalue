@@ -1,6 +1,7 @@
 
 /run/verbose 1
 /control/verbose 1
+/tracking/verbose 2
 /control/cout/ignoreThreadsExcept 0
 #
 /run/numberOfThreads 4
@@ -48,7 +49,7 @@
 #
 
 #/gun/energy 1 MeV
-/run/beamOn 1000
+/run/beamOn 10
 #
 #/gun/energy 2 keV
 #/run/beamOn 1000

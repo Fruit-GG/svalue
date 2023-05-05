@@ -1,0 +1,51 @@
+    G4double energe[14];
+    energe[0] = 0.0334;
+    energe[1] = 0.0429;
+    energe[2] = 0.116;
+    energe[3] = 0.226;
+    energe[4] = 1.82;
+    energe[5] = 2.05;
+    energe[6] = 2.32;
+    energe[7] = 2.66;
+    energe[8] = 15.3;
+    energe[9] = 17.8;
+    energe[10] = 119;
+    energe[11] = 122;
+    energe[12] = 137;
+    energe[13] = 140;
+
+
+
+    G4double probability[14];
+    probability[0] = 1.98;
+    probability[1] = 0.0193;
+    probability[2] = 0.747;
+    probability[3] = 1.1;
+    probability[4] = 0.991;
+    probability[5] = 0.0868;
+    probability[6] = 0.0137;
+    probability[7] = 0.0012;
+    probability[8] = 0.0126;
+    probability[9] = 0.0047;
+    probability[10] = 0.0843;
+    probability[11] = 0.0059;
+    probability[12] = 0.0136;
+    probability[13] = 0.0062;
+
+
+
+    G4double final_probability = 5.0663 * G4UniformRand();
+    G4double total_probability = 0;
+    int count = 0;
+    for (int i = 0; i < 14; i++)
+    {
+        total_probability += probability[i];
+        if (total_probability >= final_probability) {
+            break;
+        }
+        count++;
+    }
+
+  fParticleGun->SetParticleEnergy(energe[count] * keV);
+
+在void PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)下如此布置
