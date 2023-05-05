@@ -49,7 +49,7 @@
 #
 
 #/gun/energy 1 MeV
-/run/beamOn 10
+/run/beamOn 5
 #
 #/gun/energy 2 keV
 #/run/beamOn 1000

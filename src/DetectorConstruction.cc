@@ -200,31 +200,32 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 
 
   /*
-按细胞123依次为其所在的位置进行命名，但在logical上不做区分
+按细胞123依次为其所在的位置进行命名，但在logical上不做区分,一定要用copynum
 */
   for (int i = 0; i < 13; i++)
   {
-      std::stringstream ss,aa;
-      ss << "Nucl_" << i;
-      aa << "Cyto_" << i;
-      G4String name1 = ss.str();
-      G4String name2 = aa.str();
 
-      fNucl = new G4PVPlacement(0,
+      fNucl = new G4PVPlacement(
+          0,
           cell_Vector[i],
-          name1,
           fLogicalNucl,
-          fECM,
+          "Nucl_",
+          fLogicalECM,
           false,
-          0);
+          i,
+          checkOverlaps);
 
-      fCyto = new G4PVPlacement(0,
+      fCyto = new G4PVPlacement(
+          0,
           cell_Vector[i],
-          name2,
           fLogicalCyto,
-          fECM,
+          "Cyto_",
+          fLogicalECM,
           false,
-          0);
+          i,
+          checkOverlaps);
+
+
   }
 
   //
